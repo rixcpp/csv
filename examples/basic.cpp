@@ -1,23 +1,39 @@
+/**
+ * @file basic.cpp
+ * @brief Basic example for rix/csv.
+ */
+
 #include <rix/csv.hpp>
+
 #include <iostream>
+#include <string>
 
-static void run_basic_example()
+namespace
 {
-  const std::string input =
-      "name,language\n"
-      "Ada,C++\n"
-      "Gaspard,Vix\n";
-
-  const auto table = rix::csv::parse(input);
-
-  for (const auto &row : table)
+  void print_table(const rixlib::csv::Table &table)
   {
-    for (const auto &field : row)
+    for (const auto &row : table)
     {
-      std::cout << field << " ";
-    }
+      for (const auto &field : row)
+      {
+        std::cout << field << ' ';
+      }
 
-    std::cout << "\n";
+      std::cout << '\n';
+    }
+  }
+
+  void run_basic_example()
+  {
+    const std::string input =
+        "name,language\n"
+        "Ada,C++\n"
+        "Gaspard,Vix\n";
+
+    const rixlib::csv::Csv csv;
+    const auto table = csv.parse(input);
+
+    print_table(table);
   }
 }
 
