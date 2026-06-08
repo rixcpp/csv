@@ -93,6 +93,39 @@ namespace
     expect_true(output == expected, "write should serialize table to CSV text");
   }
 
+  void test_csv_facade_parse_and_write()
+  {
+    const rixlib::csv::Csv csv{};
+
+    const std::string input =
+        "name,language\n"
+        "Ada,C++\n";
+
+    const rixlib::csv::Table table = csv.parse(input);
+
+    expect_true(table.size() == 2, "Csv::parse should return 2 rows");
+    expect_true(table[1][0] == "Ada", "Csv::parse should parse data rows");
+    expect_true(table[1][1] == "C++", "Csv::parse should parse second field");
+
+    const std::string output = csv.write(table);
+
+    expect_true(
+        output == input,
+        "Csv::write should serialize parsed table");
+  }
+
+  void test_csv_facade_write_row()
+  {
+    const rixlib::csv::Csv csv{};
+
+    const rixlib::csv::Row row = {"Rix", "CSV"};
+    const std::string output = csv.write_row(row);
+
+    expect_true(
+        output == "Rix,CSV",
+        "Csv::write_row should serialize one row");
+  }
+
   void run_tests()
   {
     test_parse_single_row();
@@ -100,6 +133,8 @@ namespace
     test_parse_skips_empty_lines_when_enabled();
     test_write_row();
     test_write_table();
+    test_csv_facade_parse_and_write();
+    test_csv_facade_write_row();
   }
 }
 

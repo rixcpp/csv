@@ -1910,6 +1910,96 @@ namespace rixlib::csv
     save(path, table, opt);
   }
 
+  /**
+   * @brief Object-style CSV API for rix/csv.
+   *
+   * This class keeps the package usable as an object component while the
+   * free functions remain the core API.
+   *
+   * It is used by the unified Rix facade as:
+   *
+   * @code
+   * rix.csv.parse(...)
+   * rix.csv.write(...)
+   * @endcode
+   */
+  class Csv
+  {
+  public:
+    /**
+     * @brief Parse a CSV document from a string.
+     */
+    [[nodiscard]] Table parse(const std::string &text,
+                              const Options &opt = {}) const
+    {
+      return rixlib::csv::parse(text, opt);
+    }
+
+    /**
+     * @brief Parse a CSV document from an input stream.
+     */
+    [[nodiscard]] Table parse(std::istream &input,
+                              const Options &opt = {}) const
+    {
+      return rixlib::csv::parse(input, opt);
+    }
+
+    /**
+     * @brief Write a table to a CSV string.
+     */
+    [[nodiscard]] std::string write(const Table &table,
+                                    const WriteOptions &opt = {}) const
+    {
+      return rixlib::csv::write(table, opt);
+    }
+
+    /**
+     * @brief Write one row to a CSV line.
+     */
+    [[nodiscard]] std::string write_row(const Row &row,
+                                        const WriteOptions &opt = {}) const
+    {
+      return rixlib::csv::write_row(row, opt);
+    }
+
+    /**
+     * @brief Write a table directly to an output stream.
+     */
+    void write_to(std::ostream &output,
+                  const Table &table,
+                  const WriteOptions &opt = {}) const
+    {
+      rixlib::csv::write_to(output, table, opt);
+    }
+
+    /**
+     * @brief Load a CSV file from disk.
+     */
+    [[nodiscard]] Table load(const std::string &path,
+                             const Options &opt = {}) const
+    {
+      return rixlib::csv::load(path, opt);
+    }
+
+    /**
+     * @brief Save a CSV table to disk.
+     */
+    void save(const std::string &path,
+              const Table &table,
+              const WriteOptions &opt = {}) const
+    {
+      rixlib::csv::save(path, table, opt);
+    }
+
+    /**
+     * @brief Return the rix/csv package version.
+     */
+    [[nodiscard]] std::string version() const
+    {
+      return rixlib::csv::version();
+    }
+  };
+
 } // namespace rixlib::csv
 
 #endif // RIXCPP_CSV_INCLUDE_RIX_CSV_HPP_INCLUDED
