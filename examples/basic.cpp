@@ -8,37 +8,36 @@
 #include <iostream>
 #include <string>
 
-namespace
-{
-  void print_table(const rixlib::csv::Table &table)
-  {
-    for (const auto &row : table)
-    {
-      for (const auto &field : row)
-      {
-        std::cout << field << ' ';
-      }
-
-      std::cout << '\n';
-    }
-  }
-
-  void run_basic_example()
-  {
-    const std::string input =
-        "name,language\n"
-        "Ada,C++\n"
-        "Gaspard,Vix\n";
-
-    const rixlib::csv::Csv csv;
-    const auto table = csv.parse(input);
-
-    print_table(table);
-  }
-}
-
 int main()
 {
-  run_basic_example();
+  const std::string input =
+      "name,language\n"
+      "Ada,C++\n"
+      "Gaspard,Vix\n";
+
+  const rixlib::csv::Table table = rixlib::csv::parse(input);
+
+  std::cout << "rows: " << table.size() << '\n';
+
+  for (const auto &row : table)
+  {
+    for (std::size_t i = 0; i < row.size(); ++i)
+    {
+      if (i > 0)
+      {
+        std::cout << ' ';
+      }
+
+      std::cout << row[i];
+    }
+
+    std::cout << '\n';
+  }
+
+  const std::string output = rixlib::csv::write(table);
+
+  std::cout << "\nserialized:\n";
+  std::cout << output;
+
   return 0;
 }
